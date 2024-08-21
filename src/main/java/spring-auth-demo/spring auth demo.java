@@ -1,14 +1,20 @@
- //code-start
+// Refactored Code:
+
+//code-start
 
 package com.example.login;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 
-// Security best practice: Avoid hardcoding sensitive information
 import com.example.security.UserDetailsService;
 import com.example.security.PasswordEncoder;
 
@@ -30,25 +36,24 @@ public class LoginController {
     /**
      * Authenticates a user based on provided username and password.
      *
-     * @param username The username of the user.
-     * @param password The password of the user.
+     * @param credentials The login credentials object containing username and password.
      * @return Authentication success or failure.
      */
     @PostMapping("/login")
-    public ResponseEntity<?> loginUser(@RequestParam String username, @RequestParam String password) {
+    public ResponseEntity<?> loginUser(@RequestBody LoginCredentials credentials) {
         try {
             // Security best practice: Validate user inputs
-            if (username == null || password == null) {
+            if (credentials.getUsername() == null || credentials.getPassword() == null) {
                 return ResponseEntity.badRequest().body("Username and password are required.");
             }
 
-            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+            UserDetails userDetails = userDetailsService.loadUserByUsername(credentials.getUsername());
             if (userDetails == null) {
                 return ResponseEntity.badRequest().body("User not found.");
             }
 
             // Security best practice: Use a password encoder to hash the password
-            String encodedPassword = passwordEncoder.encode(password);
+            String encodedPassword = passwordEncoder.encode(credentials.getPassword());
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, encodedPassword);
 
             // Security best practice: Handle authentication exceptions
@@ -61,6 +66,29 @@ public class LoginController {
             // Log the authentication exception details for debugging
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(authenticationException.getMessage());
         }
+    }
+}
+
+// LoginCredentials class to encapsulate username and password
+public class LoginCredentials {
+
+    private String username;
+    private String password;
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
 
