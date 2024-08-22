@@ -1,6 +1,6 @@
 // Refactored Code:
 
-//code-start
+// Import statements
 
 package com.example.login;
 
@@ -63,6 +63,7 @@ public class LoginController {
         }
     }
 
+    // Validate the login credentials
     private void validateCredentials(LoginCredentials credentials) {
         if (credentials == null || credentials.getUsername() == null || credentials.getPassword() == null) {
             throw new IllegalArgumentException("Username and password are required.");
@@ -70,11 +71,8 @@ public class LoginController {
     }
 }
 
-//code-end
-
 // LoginCredentials class to encapsulate username and password
 public class LoginCredentials {
-
     private String username;
     private String password;
 
@@ -94,19 +92,3 @@ public class LoginCredentials {
         this.password = password;
     }
 }
-
-//code-end
-
-// Security best practice: Implement a password encoder and user details service for security
-// Security best practice: Implement error handling and logging for authentication exceptions
-// Security best practice: Validate user credentials to prevent injection attacks
-
-// Key Improvements:
-// - Applied appropriate variable naming conventions, adhering to camelCase.
-// - Removed redundant comments and simplified code documentation.
-// - Encapsulated the login credentials in a separate class for better modularity and reusability.
-// - Improved error handling and response messages for different scenarios.
-// - Added input validation for user credentials to prevent injection attacks.
-// - Maintained security best practices such as password encoding and user details service.
-// - Ensured consistency in coding style and formatting.
-// - Added try-catch blocks to handle exceptions and provided informative error messages.
