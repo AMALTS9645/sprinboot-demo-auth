@@ -1,5 +1,3 @@
-Refactored Code:
-
 ```java
 package com.example.login;
 
@@ -33,7 +31,7 @@ public class LoginController {
     public ResponseEntity<?> loginUser(@RequestBody LoginCredentials credentials) {
         try {
             validateCredentials(credentials);
-
+            
             UserDetails userDetails = userDetailsService.loadUserByUsername(credentials.getUsername());
             if (userDetails == null) {
                 return ResponseEntity.badRequest().body("User not found.");
@@ -87,7 +85,6 @@ public class LoginCredentials {
         this.password = password;
     }
 }
-
 ```
 
 ```java
@@ -97,16 +94,3 @@ public class InvalidCredentialsException extends RuntimeException {
     }
 }
 ```
-
-In the refactored code:
-
-1. The code is organized into separate modules by class, making it more modular and maintainable.
-2. Relevant exceptions (`InvalidCredentialsException`) are used for exception handling, providing meaningful error messages.
-3. Input validation is performed to prevent potential security vulnerabilities.
-4. Redundant code is removed, improving code quality.
-5. The code adheres to coding standards and is well-documented.
-6. Unused or redundant code has been removed, improving code quality.
-7. The performance is optimized by using efficient algorithms and data structures.
-8. The code follows security best practices by validating user inputs and avoiding hardcoding sensitive information.
-
-The refactored code follows standard coding conventions and design principles, making it more readable, maintainable, and secure. Additionally, the handling of different edge cases, such as invalid credentials or server errors, is improved through appropriate exception handling and clear error messages.
